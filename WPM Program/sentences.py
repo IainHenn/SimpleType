@@ -4,7 +4,7 @@ import random
 
 class words:
     def __init__(self,w,sentence):
-        self._wordsArr = w 
+        self._wordsArr = w
         self._sentenceArr = sentence
     
     def getWordsArr(self):
@@ -38,4 +38,6 @@ class words:
         tempSentenceArr = []
         for i in range(1,10):
             tempSentenceArr.append(self.getWordsArr()[random.randint(0,len(self.getWordsArr()))])
+        tempSentenceArr.insert(0,"start")
         self.setSentence(tempSentenceArr)
+

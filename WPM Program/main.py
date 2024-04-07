@@ -3,7 +3,7 @@ from tkinter import *
 import random 
 import time
 
-wordsTXT = r"words.txt"
+wordsTXT = r"WPM Program/words.txt"
 sentence = []
 setOfWords = []
 global testArr
@@ -14,19 +14,18 @@ global wpm
 global timeElapsed
 
 i = 0
-testArr = ["start","spider", "finger", "who", "house", "their"]
-testArr_no_start = ["spider","finger","who","house","their"]
-randomWord = testArr[i]
+#testArr = ["start","spider", "finger", "who", "house", "their"]
+#testArr_no_start = ["spider","finger","who","house","their"]
 startTime = 0
 timeElapsed = 0
 wpm = 0
 
-#obj1 = words(setOfWords,sentence)
-#obj1.addWords(wordsTXT)
-#obj1.create_sentence()
-#obj1.getSentence()
-#obj1.printSentence()
-
+obj1 = words(setOfWords,sentence)
+obj1.addWords(wordsTXT)
+obj1.create_sentence()
+wordsArr = obj1.getSentence()
+randomWord = wordsArr[i]
+print(wordsArr)
 
 mainWindow = Tk()
 mainWindow.minsize(900,300)
@@ -46,15 +45,15 @@ def greetingFunc():
 
 def postWPM():
     global WPM_lab
-    WPM_lab = Label(mainWindow,width = 500, text = str(round((totalKeys(testArr_no_start)/5)/(timeElapsed/60),2))+ " WPM")
+    WPM_lab = Label(mainWindow,width = 500, text = str(round((totalKeys(wordsArr)/5)/(timeElapsed/60),2))+ " WPM")
     WPM_lab.config(font = ('Arial',26))
-    WPM_lab.pack(padx = 50, pady = 10)
+    WPM_lab.pack(padx = 10, pady = 10)
 
 def rWordFunc():
     global word
     word = Label(mainWindow, width = 500, text = randomWord)
     word.config(font = ('Arial',26))
-    word.pack(padx = 30, pady = 10)
+    word.pack(padx = 10, pady = 10)
 
 def entry():
     global textBox
@@ -79,12 +78,13 @@ def enterPressed(event):
            textBox.delete(0,"end")
        textBox.delete(0,"end")
        i = i + 1
-       if(i < len(testArr)):
-            randomWord = testArr[i]
+       if(i < len(wordsArr)):
+            randomWord = wordsArr[i]
             updateWord(word)
        else:
            endTime()
            postWPM()
+               
             
 
 def startTime():
