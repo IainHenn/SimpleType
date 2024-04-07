@@ -40,13 +40,13 @@ def totalKeys(array):
 
 def greetingFunc():
     global greeting
-    greeting = Label(mainWindow,width = 500, text = "Type Word To Begin")
+    greeting = Label(mainWindow,width = 500, text = "Type \"start\" To Begin")
     greeting.config(font = ('Arial',26))
     greeting.pack(padx = 10, pady = 10)
 
 def postWPM():
     global WPM_lab
-    WPM_lab = Label(mainWindow,width = 500, text = (totalKeys(testArr_no_start)/5)/(timeElapsed/60))
+    WPM_lab = Label(mainWindow,width = 500, text = str(round((totalKeys(testArr_no_start)/5)/(timeElapsed/60),2))+ " WPM")
     WPM_lab.config(font = ('Arial',26))
     WPM_lab.pack(padx = 50, pady = 10)
 
