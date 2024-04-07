@@ -1,13 +1,25 @@
 from sentences import words 
-from PySide6 import QtCore, QtWidgets, QtGui
-import sys 
+from tkinter import *
 import random 
+import time
 
 wordsTXT = r"words.txt"
 sentence = []
 setOfWords = []
+global testArr
+global randomWord
+global i
+global startTime
+global wpm
+global timeElapsed
 
-
+i = 0
+testArr = ["start","spider", "finger", "who", "house", "their"]
+testArr_no_start = ["spider","finger","who","house","their"]
+randomWord = testArr[i]
+startTime = 0
+timeElapsed = 0
+wpm = 0
 
 #obj1 = words(setOfWords,sentence)
 #obj1.addWords(wordsTXT)
@@ -16,30 +28,78 @@ setOfWords = []
 #obj1.printSentence()
 
 
+mainWindow = Tk()
+mainWindow.minsize(900,300)
+mainWindow.title("SimpleType")
 
-class Main(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("SimpleType")
-        self.kod = []
-        self.button = QtWidgets.QPushButton("Press Space To Start")
-        lay = QtWidgets.QVBoxLayout(self)
-        lay.setContentsMargins(300,300,300,300)
-        lay.addStretch()
-        lay.addWidget(self.button, alignment = QtCore.Qt.AlignVCenter)
+def totalKeys(array):
+    keys = 0
+    for i in array:
+        keys += len(i)
+    return keys
 
-        self.button.clicked.connect(self.clearLayout)
+def greetingFunc():
+    global greeting
+    greeting = Label(mainWindow,width = 500, text = "Type Word To Begin")
+    greeting.config(font = ('Arial',26))
+    greeting.pack(padx = 10, pady = 10)
 
+def postWPM():
+    global WPM_lab
+    WPM_lab = Label(mainWindow,width = 500, text = (totalKeys(testArr_no_start)/5)/(timeElapsed/60))
+    WPM_lab.config(font = ('Arial',26))
+    WPM_lab.pack(padx = 50, pady = 10)
 
+def rWordFunc():
+    global word
+    word = Label(mainWindow, width = 500, text = randomWord)
+    word.config(font = ('Arial',26))
+    word.pack(padx = 30, pady = 10)
 
+def entry():
+    global textBox
+    textBox = Entry(mainWindow, width = 500, bd = 5, justify = 'center')
+    textBox.config(font = ('Arial',30))
+    textBox.bind("<Return>",enterPressed)
+    textBox.focus_set()
+    textBox.pack(side = BOTTOM)
 
+def updateWord(word):
+    global randomWord
+    word.config(text = randomWord)
 
+def enterPressed(event):
+   global randomWord
+   global i
+   global word
+   print(textBox.get() == randomWord)
+   if(textBox.get() == randomWord):
+       if(randomWord == "start"):
+           startTime()
+           textBox.delete(0,"end")
+       textBox.delete(0,"end")
+       i = i + 1
+       if(i < len(testArr)):
+            randomWord = testArr[i]
+            updateWord(word)
+       else:
+           endTime()
+           postWPM()
+            
 
+def startTime():
+    global startTime 
+    startTime = time.time()
+    print("Start Time: " + str(startTime))
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication([])
-    widget = Main()
-    widget.resize(900,600)
-    widget.show()
+def endTime():
+    global timeElapsed
+    endTime = time.time()
+    timeElapsed = endTime - startTime
+    
 
-    sys.exit(app.exec())
+while True:
+    greetingFunc()
+    rWordFunc()
+    entry()
+    mainWindow.mainloop()
